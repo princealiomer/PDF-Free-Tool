@@ -1,0 +1,19 @@
+import React from 'react';
+
+const Footer = () => {
+    return (
+        <footer style={{ background: 'var(--bg-card)', borderTop: '1px solid var(--border)', padding: '3rem 0', marginTop: 'auto' }}>
+            <div className="container" style={{ textAlign: 'center', color: 'var(--text-muted)' }}>
+                <p style={{ fontWeight: 500, marginBottom: '0.5rem' }}>© {new Date().getFullYear()} PDF Tools</p>
+                <p style={{ fontSize: '0.875rem' }}>Secure, client-side PDF processing. Your files never leave your device.</p>
+                <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center', gap: '2rem', fontSize: '0.875rem' }}>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Contact</a>
+                </div>
+            </div>
+        </footer>
+    );
+};
+
+export default Footer;
