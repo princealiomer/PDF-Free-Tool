@@ -6,6 +6,9 @@ const Footer = () => {
             <div className="container" style={{ textAlign: 'center', color: 'var(--text-muted)' }}>
                 <p style={{ fontWeight: 500, marginBottom: '0.5rem' }}>© {new Date().getFullYear()} PDF Tools</p>
                 <p style={{ fontSize: '0.875rem' }}>Secure, client-side PDF processing. Your files never leave your device.</p>
+                <p style={{ fontSize: '0.875rem', marginTop: '0.5rem' }}>
+                    Developed by <a href="https://www.facebook.com/omerthelinkbuilder" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', fontWeight: '600' }}>Omer Y.</a>
+                </p>
                 <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center', gap: '2rem', fontSize: '0.875rem' }}>
                     <a href="#">Privacy Policy</a>
                     <a href="#">Terms of Service</a>
