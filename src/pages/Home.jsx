@@ -64,7 +64,7 @@ const Home = () => {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             <SEO>
-                <meta name="google-site-verification" content="AREr1HqJ3O_FROr_ZPilMibQSMCLSKQ9TutiqmpWse4" />
+
             </SEO>
             <section style={{ textAlign: 'center', padding: '4rem 1rem 3rem' }}>
                 <h1 style={{ fontSize: '3rem', fontWeight: '800', marginBottom: '1.5rem', color: 'var(--text-main)', letterSpacing: '-0.025em' }}>
