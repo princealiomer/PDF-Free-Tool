@@ -33,6 +33,9 @@ const PDFToPDFA = React.lazy(() => import('./pages/PDFToPDFA'));
 const EditPDF = React.lazy(() => import('./pages/EditPDF'));
 const CropPDF = React.lazy(() => import('./pages/CropPDF'));
 const ComingSoon = React.lazy(() => import('./pages/ComingSoon'));
+const PrivacyPolicy = React.lazy(() => import('./pages/PrivacyPolicy'));
+const TermsOfService = React.lazy(() => import('./pages/TermsOfService'));
+const Contact = React.lazy(() => import('./pages/Contact'));
 
 const Loading = () => (
   <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-muted)' }}>
@@ -80,6 +83,12 @@ function App() {
         <Route path="edit-pdf" element={<Suspense fallback={<Loading />}><EditPDF /></Suspense>} />
         <Route path="crop-pdf" element={<Suspense fallback={<Loading />}><CropPDF /></Suspense>} />
 
+        {/* Legal & Contact */}
+        <Route path="privacy-policy" element={<Suspense fallback={<Loading />}><PrivacyPolicy /></Suspense>} />
+        <Route path="terms-of-service" element={<Suspense fallback={<Loading />}><TermsOfService /></Suspense>} />
+        <Route path="contact" element={<Suspense fallback={<Loading />}><Contact /></Suspense>} />
+
+        <Route path="*" element={<Suspense fallback={<Loading />}><ComingSoon title="Tool Coming Soon" /></Suspense>} />
         <Route path="*" element={<Suspense fallback={<Loading />}><ComingSoon title="Tool Coming Soon" /></Suspense>} />
       </Route>
     </Routes>

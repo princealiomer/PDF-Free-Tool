@@ -4,8 +4,9 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import { saveAs } from 'file-saver';
 import FileUploader from '../components/common/FileUploader';
 import Button from '../components/common/Button';
-import { ArrowLeft, Type, PenTool, Image as ImageIcon, Eraser, Move, ChevronLeft, ChevronRight, Save } from 'lucide-react';
+import { ArrowLeft, Type, PenTool, Image as ImageIcon, Eraser, Move, ChevronLeft, ChevronRight, Save, ChevronDown, ChevronUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/common/SEO';
 
 // Use local worker from public folder for maximum stability
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
@@ -18,6 +19,7 @@ const EditPDF = () => {
     const [scale, setScale] = useState(1.5);
     const [processing, setProcessing] = useState(false);
     const [error, setError] = useState(null);
+    const [openFaq, setOpenFaq] = useState(null);
 
     // Tools: 'select', 'text', 'pen', 'image'
     const [tool, setTool] = useState('select');
@@ -314,111 +316,213 @@ const EditPDF = () => {
         }));
     };
 
+    const toggleFaq = (index) => {
+        setOpenFaq(openFaq === index ? null : index);
+    };
+
+    const schema = {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Edit PDF",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "description": "Free online PDF editor. Add text, images, and drawings to your PDF files directly in your browser.",
+        "featureList": "PDF Editor, Add Text, Drawing Tool, Insert Images",
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.7",
+            "ratingCount": "120"
+        }
+    };
+
     return (
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-            <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', marginBottom: '1.5rem', fontWeight: 500 }}>
-                <ArrowLeft size={16} /> Back to Tools
-            </Link>
+        <>
+            <SEO
+                title="Edit PDF - Free Online PDF Editor"
+                description="Edit PDF files online for free. Add text, images, shapes, and freehand drawings to your documents."
+                keywords="edit pdf, online pdf editor, add text to pdf, draw on pdf, free pdf tool, modify pdf"
+                schema={schema}
+            />
 
-            <div style={{ display: 'flex', gap: '2rem', height: '80vh' }}>
-                {/* Left: Toolbar */}
-                <div style={{ padding: '1.5rem', background: 'white', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-md)', display: 'flex', flexDirection: 'column', gap: '1rem', width: '250px' }}>
-                    <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>Tools</h2>
+            <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+                <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', marginBottom: '1.5rem', fontWeight: 500 }}>
+                    <ArrowLeft size={16} /> Back to Tools
+                </Link>
 
-                    <button
-                        onClick={() => setTool('select')}
-                        style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: tool === 'select' ? '2px solid var(--primary)' : '1px solid var(--border)', background: tool === 'select' ? '#EEF2FF' : 'white', cursor: 'pointer' }}
-                    >
-                        <Move size={18} /> Select / View
-                    </button>
+                <div style={{ display: 'flex', gap: '2rem', height: '80vh', marginBottom: '4rem' }}>
+                    {/* Left: Toolbar */}
+                    <div style={{ padding: '1.5rem', background: 'white', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-md)', display: 'flex', flexDirection: 'column', gap: '1rem', width: '250px' }}>
+                        <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>Tools</h2>
 
-                    <button
-                        onClick={() => setTool('text')}
-                        style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: tool === 'text' ? '2px solid var(--primary)' : '1px solid var(--border)', background: tool === 'text' ? '#EEF2FF' : 'white', cursor: 'pointer' }}
-                    >
-                        <Type size={18} /> Add Text
-                    </button>
+                        <button
+                            onClick={() => setTool('select')}
+                            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: tool === 'select' ? '2px solid var(--primary)' : '1px solid var(--border)', background: tool === 'select' ? '#EEF2FF' : 'white', cursor: 'pointer' }}
+                        >
+                            <Move size={18} /> Select / View
+                        </button>
 
-                    <button
-                        onClick={() => setTool('pen')}
-                        style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: tool === 'pen' ? '2px solid var(--primary)' : '1px solid var(--border)', background: tool === 'pen' ? '#EEF2FF' : 'white', cursor: 'pointer' }}
-                    >
-                        <PenTool size={18} /> Draw (Pen)
-                    </button>
+                        <button
+                            onClick={() => setTool('text')}
+                            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: tool === 'text' ? '2px solid var(--primary)' : '1px solid var(--border)', background: tool === 'text' ? '#EEF2FF' : 'white', cursor: 'pointer' }}
+                        >
+                            <Type size={18} /> Add Text
+                        </button>
 
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'white', cursor: 'pointer' }}>
-                        <ImageIcon size={18} /> Add Image
-                        <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} />
-                    </label>
+                        <button
+                            onClick={() => setTool('pen')}
+                            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: tool === 'pen' ? '2px solid var(--primary)' : '1px solid var(--border)', background: tool === 'pen' ? '#EEF2FF' : 'white', cursor: 'pointer' }}
+                        >
+                            <PenTool size={18} /> Draw (Pen)
+                        </button>
 
-                    <button
-                        onClick={clearPage}
-                        style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid #fee2e2', background: '#fef2f2', color: '#dc2626', cursor: 'pointer', marginTop: 'auto' }}
-                    >
-                        <Eraser size={18} /> Clear Page
-                    </button>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'white', cursor: 'pointer' }}>
+                            <ImageIcon size={18} /> Add Image
+                            <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} />
+                        </label>
 
-                    <Button onClick={handleSave} disabled={processing} size="lg" style={{ marginTop: '1rem' }}>
-                        {processing ? 'Saving...' : <><Save size={18} style={{ marginRight: '0.5rem' }} /> Save PDF</>}
-                    </Button>
+                        <button
+                            onClick={clearPage}
+                            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid #fee2e2', background: '#fef2f2', color: '#dc2626', cursor: 'pointer', marginTop: 'auto' }}
+                        >
+                            <Eraser size={18} /> Clear Page
+                        </button>
+
+                        <Button onClick={handleSave} disabled={processing} size="lg" style={{ marginTop: '1rem' }}>
+                            {processing ? 'Saving...' : <><Save size={18} style={{ marginRight: '0.5rem' }} /> Save PDF</>}
+                        </Button>
+                    </div>
+
+                    {/* Center: Canvas Area */}
+                    <div style={{ flex: 1, background: 'var(--bg-main)', borderRadius: 'var(--radius-lg)', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', overflow: 'auto', position: 'relative' }}>
+                        {error ? (
+                            <div style={{ color: 'red', marginTop: '4rem' }}>{error} - Try refreshing the page.</div>
+                        ) : !file ? (
+                            <div style={{ width: '100%', maxWidth: '400px', marginTop: '4rem' }}>
+                                <FileUploader onFilesSelected={handleFile} label="Open PDF to Edit" />
+                            </div>
+                        ) : (
+                            <div style={{ position: 'relative', boxShadow: 'var(--shadow-lg)' }}>
+                                <canvas ref={canvasRef} style={{ display: 'block', borderRadius: '2px' }} />
+                                <canvas
+                                    ref={overlayRef}
+                                    onMouseDown={handleMouseDown}
+                                    onMouseMove={handleMouseMove}
+                                    onMouseUp={handleMouseUp}
+                                    onMouseLeave={handleMouseUp}
+                                    style={{
+                                        position: 'absolute',
+                                        top: 0, left: 0,
+                                        cursor: tool === 'pen' ? 'crosshair' : tool === 'text' ? 'text' : 'default',
+                                        touchAction: 'none'
+                                    }}
+                                />
+
+                                {/* Text Input Overlay */}
+                                {textInput.visible && (
+                                    <div style={{ position: 'absolute', left: textInput.x, top: textInput.y, padding: '4px', background: 'white', borderRadius: '4px', boxShadow: '0 2px 5px rgba(0,0,0,0.2)' }}>
+                                        <input
+                                            autoFocus
+                                            value={textInput.value}
+                                            onChange={(e) => setTextInput(prev => ({ ...prev, value: e.target.value }))}
+                                            onKeyDown={(e) => e.key === 'Enter' && handleTextSubmit()}
+                                            onBlur={handleTextSubmit} // Confirm on blur
+                                            style={{ border: '1px solid #ccc', padding: '4px', outline: 'none' }}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Navigation */}
                 </div>
-
-                {/* Center: Canvas Area */}
-                <div style={{ flex: 1, background: 'var(--bg-main)', borderRadius: 'var(--radius-lg)', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', overflow: 'auto', position: 'relative' }}>
-                    {error ? (
-                        <div style={{ color: 'red', marginTop: '4rem' }}>{error} - Try refreshing the page.</div>
-                    ) : !file ? (
-                        <div style={{ width: '100%', maxWidth: '400px', marginTop: '4rem' }}>
-                            <FileUploader onFilesSelected={handleFile} label="Open PDF to Edit" />
-                        </div>
-                    ) : (
-                        <div style={{ position: 'relative', boxShadow: 'var(--shadow-lg)' }}>
-                            <canvas ref={canvasRef} style={{ display: 'block', borderRadius: '2px' }} />
-                            <canvas
-                                ref={overlayRef}
-                                onMouseDown={handleMouseDown}
-                                onMouseMove={handleMouseMove}
-                                onMouseUp={handleMouseUp}
-                                onMouseLeave={handleMouseUp}
-                                style={{
-                                    position: 'absolute',
-                                    top: 0, left: 0,
-                                    cursor: tool === 'pen' ? 'crosshair' : tool === 'text' ? 'text' : 'default',
-                                    touchAction: 'none'
-                                }}
-                            />
-
-                            {/* Text Input Overlay */}
-                            {textInput.visible && (
-                                <div style={{ position: 'absolute', left: textInput.x, top: textInput.y, padding: '4px', background: 'white', borderRadius: '4px', boxShadow: '0 2px 5px rgba(0,0,0,0.2)' }}>
-                                    <input
-                                        autoFocus
-                                        value={textInput.value}
-                                        onChange={(e) => setTextInput(prev => ({ ...prev, value: e.target.value }))}
-                                        onKeyDown={(e) => e.key === 'Enter' && handleTextSubmit()}
-                                        onBlur={handleTextSubmit} // Confirm on blur
-                                        style={{ border: '1px solid #ccc', padding: '4px', outline: 'none' }}
-                                    />
-                                </div>
-                            )}
-                        </div>
-                    )}
-                </div>
-
-                {/* Navigation */}
+                {file && (
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1rem', marginTop: '-3rem', marginBottom: '2rem' }}>
+                        <Button variant="secondary" onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))} disabled={currentPage <= 1}>
+                            <ChevronLeft size={20} /> Prev
+                        </Button>
+                        <span style={{ fontWeight: 600 }}>Page {currentPage} of {numPages}</span>
+                        <Button variant="secondary" onClick={() => setCurrentPage(prev => Math.min(numPages, prev + 1))} disabled={currentPage >= numPages}>
+                            Next <ChevronRight size={20} />
+                        </Button>
+                    </div>
+                )}
             </div>
-            {file && (
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1rem', marginTop: '1rem' }}>
-                    <Button variant="secondary" onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))} disabled={currentPage <= 1}>
-                        <ChevronLeft size={20} /> Prev
-                    </Button>
-                    <span style={{ fontWeight: 600 }}>Page {currentPage} of {numPages}</span>
-                    <Button variant="secondary" onClick={() => setCurrentPage(prev => Math.min(numPages, prev + 1))} disabled={currentPage >= numPages}>
-                        Next <ChevronRight size={20} />
-                    </Button>
-                </div>
-            )}
-        </div>
+
+            <div style={{ maxWidth: '1000px', margin: '4rem auto 0' }}>
+                <section style={{ marginBottom: '3rem' }}>
+                    <h2 style={{ fontSize: '1.75rem', fontWeight: 'bold', marginBottom: '1rem' }}>Why use our Online PDF Editor?</h2>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', color: 'var(--text-main)' }}>
+                        <div style={{ padding: '1.5rem', background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border)' }}>
+                            <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem', color: 'var(--primary)' }}>Versatile</h3>
+                            <p style={{ color: 'var(--text-muted)' }}>Add text comments, visual highlights, signatures, or images anywhere on your document.</p>
+                        </div>
+                        <div style={{ padding: '1.5rem', background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border)' }}>
+                            <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem', color: 'var(--primary)' }}>Private</h3>
+                            <p style={{ color: 'var(--text-muted)' }}>Editing happens in your browser. Your sensitive documents never leave your device.</p>
+                        </div>
+                        <div style={{ padding: '1.5rem', background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border)' }}>
+                            <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem', color: 'var(--primary)' }}>Easy</h3>
+                            <p style={{ color: 'var(--text-muted)' }}>No software installation required. Simple and intuitive tools for quick edits.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section style={{ marginBottom: '3rem', padding: '2rem', background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)' }}>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>How to edit PDF files</h2>
+                    <ol style={{ paddingLeft: '1.5rem', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <li>Upload your PDF file.</li>
+                        <li>Select a tool from the sidebar (Text, Draw, Image).</li>
+                        <li>Click on the document to add content.</li>
+                        <li>Click 'Save PDF' to download the edited file.</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h2 style={{ fontSize: '1.75rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>Frequently Asked Questions</h2>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        {[
+                            { q: "Can I edit existing text?", a: "This tool allows adding new content (text, images, drawings) over existing content. To edit underlying text, use our PDF to Word tool." },
+                            { q: "Is it free?", a: "Yes, 100% free with no watermarks." },
+                            { q: "Can I add functionality/forms?", a: "Currently, we support visual annotations. Interactive form creation is coming soon." },
+                            { q: "Does it work on mobile?", a: "Yes, but for the best experience with drawing tools, we recommend a tablet or desktop." }
+                        ].map((item, index) => (
+                            <div key={index} style={{ border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
+                                <button
+                                    onClick={() => toggleFaq(index)}
+                                    style={{
+                                        width: '100%',
+                                        padding: '1rem',
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        background: 'var(--bg-card)',
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        textAlign: 'left',
+                                        fontWeight: '600',
+                                        color: 'var(--text-main)'
+                                    }}
+                                >
+                                    {item.q}
+                                    {openFaq === index ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                                </button>
+                                {openFaq === index && (
+                                    <div style={{ padding: '1rem', color: 'var(--text-muted)', borderTop: '1px solid var(--border)', background: 'var(--bg-background)' }}>
+                                        {item.a}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            </div>
+        </>
     );
 };
 

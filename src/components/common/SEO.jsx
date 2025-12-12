@@ -1,45 +1,61 @@
-import { useEffect } from 'react';
+import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 
-const routeTitles = {
-    '/': 'PDF Tools - All-in-One PDF Solution',
-    '/merge-pdf': 'Merge PDF - Combine PDF Files Online',
-    '/split-pdf': 'Split PDF - Separate Files Online',
-    '/remove-pages': 'Remove Pages - Delete PDF Pages',
-    '/extract-pages': 'Extract Pages - Select PDF Pages',
-    '/organize-pdf': 'Organize PDF - Sort and Reorder Pages',
-    '/protect-pdf': 'Protect PDF - Encrypt with Password',
-    '/unlock-pdf': 'Unlock PDF - Remove Password Security',
-    '/rotate-pdf': 'Rotate PDF - Rotate Pages Permanently',
-    '/page-numbers': 'Page Numbers - Add Page Numbers to PDF',
-    '/watermark': 'Watermark PDF - Add Text Stamp',
-    '/jpg-to-pdf': 'JPG to PDF - Convert Images to Documents',
-    '/pdf-to-jpg': 'PDF to JPG - Extract Images from PDF',
-    '/compress-pdf': 'Compress PDF - Reduce File Size',
-    '/scan-pdf': 'Scan to PDF - Camera Capture',
-    '/sign-pdf': 'Sign PDF - Digital Signature',
-    '/repair-pdf': 'Repair PDF - Fix Corrupted Files',
-    '/redact-pdf': 'Redact PDF - Hide Sensitive Info',
-    '/html-to-pdf': 'HTML to PDF - Convert Webpages',
-    '/compare-pdf': 'Compare PDF - Side by Side View',
-    '/text-to-pdf': 'Text to PDF - Convert Text Files'
-};
-
-const SEO = () => {
+const SEO = ({
+    title,
+    description,
+    keywords,
+    canonicalUrl,
+    canonicalUrl,
+    schema,
+    children
+}) => {
     const location = useLocation();
+    const siteUrl = 'https://pdftools.com'; // Replace with actual domain
+    const currentUrl = canonicalUrl || `${siteUrl}${location.pathname}`;
 
-    useEffect(() => {
-        const title = routeTitles[location.pathname] || 'PDF Tools - Free Online Utilities';
-        document.title = title;
+    const defaultTitle = 'PDF Tools - Free Online PDF Utilities';
+    const defaultDescription = 'Free and secure online PDF tools. Merge, split, compress, and edit PDF files directly in your browser without uploading to a server.';
+    const defaultKeywords = 'pdf tools, merge pdf, split pdf, compress pdf, free pdf editor, online pdf converter';
 
-        // Basic meta description update (optional, might not work for crawlers without SSR but good for history/tabs)
-        // const metaDesc = document.querySelector('meta[name="description"]');
-        // if (metaDesc) {
-        //     metaDesc.setAttribute('content', "Free and secure online PDF tools...");
-        // }
-    }, [location]);
+    const fullTitle = title ? `${title} | PDF Tools` : defaultTitle;
 
-    return null;
+    return (
+        <Helmet>
+            {/* Primary Meta Tags */}
+            <title>{fullTitle}</title>
+            <meta name="title" content={fullTitle} />
+            <meta name="description" content={description || defaultDescription} />
+            <meta name="keywords" content={keywords || defaultKeywords} />
+
+            {/* Canonical URL */}
+            <link rel="canonical" href={currentUrl} />
+
+            {/* Open Graph / Facebook */}
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content={currentUrl} />
+            <meta property="og:title" content={fullTitle} />
+            <meta property="og:description" content={description || defaultDescription} />
+
+            {/* Twitter */}
+            <meta property="twitter:card" content="summary_large_image" />
+            <meta property="twitter:url" content={currentUrl} />
+            <meta property="twitter:title" content={fullTitle} />
+            <meta property="twitter:description" content={description || defaultDescription} />
+
+            {/* Structured Data */}
+            {schema && (
+                <script type="application/ld+json">
+                    {JSON.stringify(schema)}
+                </script>
+            )}
+
+            {/* Custom Children */}
+            {children}
+
+        </Helmet>
+    );
 };
 
 export default SEO;

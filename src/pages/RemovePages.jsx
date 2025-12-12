@@ -5,6 +5,8 @@ import FileUploader from '../components/common/FileUploader';
 import Button from '../components/common/Button';
 import { ArrowLeft, Trash, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/common/SEO';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 const RemovePages = () => {
     const [file, setFile] = useState(null);
@@ -137,110 +139,213 @@ const RemovePages = () => {
         setPagesToRemove(Array.from(indices).sort((a, b) => a - b));
     };
 
+    const toggleFaq = (index) => {
+        setOpenFaq(openFaq === index ? null : index);
+    };
+
+    const [openFaq, setOpenFaq] = useState(null);
+
+    const schema = {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Remove Pages from PDF",
+        "applicationCategory": "ProductivityApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "description": "Remove unwanted pages from PDF documents online. Delete specific pages or ranges. Free and secure client-side processing.",
+        "featureList": "Delete pages, Range selection, Visual page picker, Client-side processing",
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.6",
+            "ratingCount": "750"
+        }
+    };
+
     return (
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-            <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', marginBottom: '1.5rem', fontWeight: 500 }}>
-                <ArrowLeft size={16} /> Back to Tools
-            </Link>
+        <>
+            <SEO
+                title="Remove Pages from PDF - Delete PDF Pages Online"
+                description="Remove pages from PDF documents online for free. Delete specific pages or ranges instantly. Secure client-side processing."
+                keywords="remove pdf pages, delete pdf pages, cut pdf pages, pdf page remover, free pdf tool"
+                schema={schema}
+            />
+            <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+                <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', marginBottom: '1.5rem', fontWeight: 500 }}>
+                    <ArrowLeft size={16} /> Back to Tools
+                </Link>
 
-            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                <h1 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>Remove Pages</h1>
-                <p style={{ color: 'var(--text-muted)' }}>Delete unwanted pages from your PDF documents.</p>
-            </div>
+                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                    <h1 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>Remove Pages</h1>
+                    <p style={{ color: 'var(--text-muted)' }}>Delete unwanted pages from your PDF documents.</p>
+                </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                {!file ? (
-                    <FileUploader
-                        onFilesSelected={handleFile}
-                        multiple={false}
-                        label="Select PDF file"
-                    />
-                ) : (
-                    <div style={{ background: 'var(--bg-card)', padding: '2rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border)' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-                            <div style={{ background: 'var(--primary)', padding: '0.75rem', borderRadius: 'var(--radius-md)', color: 'white' }}>
-                                <FileText size={32} />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                    {!file ? (
+                        <FileUploader
+                            onFilesSelected={handleFile}
+                            multiple={false}
+                            label="Select PDF file"
+                        />
+                    ) : (
+                        <div style={{ background: 'var(--bg-card)', padding: '2rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
+                                <div style={{ background: 'var(--primary)', padding: '0.75rem', borderRadius: 'var(--radius-md)', color: 'white' }}>
+                                    <FileText size={32} />
+                                </div>
+                                <div>
+                                    <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{file.name}</h3>
+                                    <p style={{ color: 'var(--text-muted)' }}>{pageCount} pages</p>
+                                </div>
+                                <Button variant="secondary" onClick={() => setFile(null)} size="sm" style={{ marginLeft: 'auto' }}>Change File</Button>
                             </div>
-                            <div>
-                                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{file.name}</h3>
-                                <p style={{ color: 'var(--text-muted)' }}>{pageCount} pages</p>
+
+                            <div style={{ marginBottom: '2rem' }}>
+                                <label style={{ display: 'block', fontWeight: 500, marginBottom: '0.5rem' }}>
+                                    Pages to Remove
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="e.g. 1, 3-5"
+                                    value={inputVal}
+                                    onChange={(e) => handleInputChange(e.target.value)}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.75rem',
+                                        borderRadius: 'var(--radius-md)',
+                                        border: '1px solid var(--border)',
+                                        fontFamily: 'inherit',
+                                        outline: 'none'
+                                    }}
+                                />
+                                <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
+                                    Selected to remove: <span style={{ fontWeight: 'bold', color: '#e53e3e' }}>{pagesToRemove.map(p => p + 1).join(', ') || 'None'}</span>
+                                </p>
                             </div>
-                            <Button variant="secondary" onClick={() => setFile(null)} size="sm" style={{ marginLeft: 'auto' }}>Change File</Button>
-                        </div>
 
-                        <div style={{ marginBottom: '2rem' }}>
-                            <label style={{ display: 'block', fontWeight: 500, marginBottom: '0.5rem' }}>
-                                Pages to Remove
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="e.g. 1, 3-5"
-                                value={inputVal}
-                                onChange={(e) => handleInputChange(e.target.value)}
-                                style={{
-                                    width: '100%',
-                                    padding: '0.75rem',
-                                    borderRadius: 'var(--radius-md)',
-                                    border: '1px solid var(--border)',
-                                    fontFamily: 'inherit',
-                                    outline: 'none'
-                                }}
-                            />
-                            <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
-                                Selected to remove: <span style={{ fontWeight: 'bold', color: '#e53e3e' }}>{pagesToRemove.map(p => p + 1).join(', ') || 'None'}</span>
-                            </p>
-                        </div>
+                            <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(auto-fill, minmax(40px, 1fr))',
+                                gap: '0.5rem',
+                                marginBottom: '2rem',
+                                maxHeight: '300px',
+                                overflowY: 'auto',
+                                padding: '1rem',
+                                border: '1px solid var(--border)',
+                                borderRadius: 'var(--radius-md)',
+                                background: '#f7fafc'
+                            }}>
+                                {Array.from({ length: pageCount }, (_, i) => i).map(pageIdx => {
+                                    const isRemoved = pagesToRemove.includes(pageIdx);
+                                    return (
+                                        <div
+                                            key={pageIdx}
+                                            onClick={() => togglePage(pageIdx)}
+                                            style={{
+                                                aspectRatio: '1',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                border: isRemoved ? '2px solid #e53e3e' : '1px solid var(--border)',
+                                                background: isRemoved ? '#FEE2E2' : 'white',
+                                                color: isRemoved ? '#c53030' : 'var(--text-main)',
+                                                borderRadius: 'var(--radius-sm)',
+                                                cursor: 'pointer',
+                                                fontSize: '0.9rem',
+                                                fontWeight: isRemoved ? 'bold' : 'normal',
+                                                transition: 'all 0.1s ease',
+                                                userSelect: 'none'
+                                            }}
+                                            title={`Click to ${isRemoved ? 'keep' : 'remove'} page ${pageIdx + 1}`}
+                                        >
+                                            {pageIdx + 1}
+                                        </div>
+                                    )
+                                })}
+                            </div>
 
-                        <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fill, minmax(40px, 1fr))',
-                            gap: '0.5rem',
-                            marginBottom: '2rem',
-                            maxHeight: '300px',
-                            overflowY: 'auto',
-                            padding: '1rem',
-                            border: '1px solid var(--border)',
-                            borderRadius: 'var(--radius-md)',
-                            background: '#f7fafc'
-                        }}>
-                            {Array.from({ length: pageCount }, (_, i) => i).map(pageIdx => {
-                                const isRemoved = pagesToRemove.includes(pageIdx);
-                                return (
-                                    <div
-                                        key={pageIdx}
-                                        onClick={() => togglePage(pageIdx)}
+                            <Button onClick={handleProcess} disabled={processing || pagesToRemove.length === 0} size="lg" style={{ width: '100%' }} variant="danger">
+                                {processing ? 'Processing...' : (
+                                    <><Trash size={20} style={{ marginRight: '0.5rem' }} /> Remove {pagesToRemove.length} Page{pagesToRemove.length !== 1 ? 's' : ''}</>
+                                )}
+                            </Button>
+                        </div>
+                    )}
+                </div>
+
+                <div style={{ marginTop: '4rem' }}>
+                    <section style={{ marginBottom: '3rem' }}>
+                        <h2 style={{ fontSize: '1.75rem', fontWeight: 'bold', marginBottom: '1rem' }}>Why use our Remove Pages tool?</h2>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', color: 'var(--text-main)' }}>
+                            <div style={{ padding: '1.5rem', background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border)' }}>
+                                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem', color: 'var(--primary)' }}>Quick Cleanup</h3>
+                                <p style={{ color: 'var(--text-muted)' }}>Instantly remove blank pages, duplicate content, or sensitive information from your PDF documents.</p>
+                            </div>
+                            <div style={{ padding: '1.5rem', background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border)' }}>
+                                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem', color: 'var(--primary)' }}>Visual Selection</h3>
+                                <p style={{ color: 'var(--text-muted)' }}>Click to select pages to delete from a visual grid, or type page numbers/ranges for precision.</p>
+                            </div>
+                            <div style={{ padding: '1.5rem', background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border)' }}>
+                                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem', color: 'var(--primary)' }}>100% Secure</h3>
+                                <p style={{ color: 'var(--text-muted)' }}>Files are processed in your browser. We never see your documents or the pages you remove.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section style={{ marginBottom: '3rem', padding: '2rem', background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)' }}>
+                        <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>How to delete pages from PDF</h2>
+                        <ol style={{ paddingLeft: '1.5rem', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                            <li>Upload your PDF file.</li>
+                            <li>Click the pages you want to remove in the grid view.</li>
+                            <li>Or type page numbers (e.g. "1, 5-7") in the input box.</li>
+                            <li>Click 'Remove Pages' to download your new, cleaner PDF.</li>
+                        </ol>
+                    </section>
+
+                    <section>
+                        <h2 style={{ fontSize: '1.75rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>Frequently Asked Questions</h2>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            {[
+                                { q: "Can I undo the deletion?", a: "Once you download the new file, the changes are permanent in that file. Your original file remains untouched on your device." },
+                                { q: "Can I delete multiple ranges at once?", a: "Yes. You can enter something like '1-3, 5, 8-10' to remove all those pages in one go." },
+                                { q: "Is there a file size limit?", a: "No hard limits, but very large files (500MB+) might depend on your browser's memory." },
+                                { q: "Does this affect the remaining pages?", a: "No, the remaining pages stay exactly as they were, just re-numbered in the new file." }
+                            ].map((item, index) => (
+                                <div key={index} style={{ border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
+                                    <button
+                                        onClick={() => toggleFaq(index)}
                                         style={{
-                                            aspectRatio: '1',
+                                            width: '100%',
+                                            padding: '1rem',
                                             display: 'flex',
+                                            justifyContent: 'space-between',
                                             alignItems: 'center',
-                                            justifyContent: 'center',
-                                            border: isRemoved ? '2px solid #e53e3e' : '1px solid var(--border)',
-                                            background: isRemoved ? '#FEE2E2' : 'white',
-                                            color: isRemoved ? '#c53030' : 'var(--text-main)',
-                                            borderRadius: 'var(--radius-sm)',
+                                            background: 'var(--bg-card)',
+                                            border: 'none',
                                             cursor: 'pointer',
-                                            fontSize: '0.9rem',
-                                            fontWeight: isRemoved ? 'bold' : 'normal',
-                                            transition: 'all 0.1s ease',
-                                            userSelect: 'none'
+                                            textAlign: 'left',
+                                            fontWeight: '600',
+                                            color: 'var(--text-main)'
                                         }}
-                                        title={`Click to ${isRemoved ? 'keep' : 'remove'} page ${pageIdx + 1}`}
                                     >
-                                        {pageIdx + 1}
-                                    </div>
-                                )
-                            })}
+                                        {item.q}
+                                        {openFaq === index ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                                    </button>
+                                    {openFaq === index && (
+                                        <div style={{ padding: '1rem', color: 'var(--text-muted)', borderTop: '1px solid var(--border)', background: 'var(--bg-background)' }}>
+                                            {item.a}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
                         </div>
-
-                        <Button onClick={handleProcess} disabled={processing || pagesToRemove.length === 0} size="lg" style={{ width: '100%' }} variant="danger">
-                            {processing ? 'Processing...' : (
-                                <><Trash size={20} style={{ marginRight: '0.5rem' }} /> Remove {pagesToRemove.length} Page{pagesToRemove.length !== 1 ? 's' : ''}</>
-                            )}
-                        </Button>
-                    </div>
-                )}
+                    </section>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

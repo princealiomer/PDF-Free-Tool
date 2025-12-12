@@ -14,8 +14,7 @@ const Header = () => {
         </Link>
         <nav style={{ display: 'flex', gap: '1.5rem' }}>
           <Link to="/" style={{ fontWeight: 500, color: 'var(--text-main)' }}>All Tools</Link>
-          <a href="#" style={{ fontWeight: 500, color: 'var(--text-muted)' }}>Pricing</a>
-          <a href="#" style={{ fontWeight: 500, color: 'var(--text-muted)' }}>Help</a>
+          <Link to="/contact" style={{ fontWeight: 500, color: 'var(--text-muted)' }}>Contact</Link>
         </nav>
       </div>
     </header>

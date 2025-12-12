@@ -7,6 +7,7 @@ import {
     RotateCw, Hash, Stamp, Crop, FileDiff, Grid, Layers
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/common/SEO';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Define categories for filters
@@ -62,6 +63,9 @@ const Home = () => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            <SEO>
+                <meta name="google-site-verification" content="AREr1HqJ3O_FROr_ZPilMibQSMCLSKQ9TutiqmpWse4" />
+            </SEO>
             <section style={{ textAlign: 'center', padding: '4rem 1rem 3rem' }}>
                 <h1 style={{ fontSize: '3rem', fontWeight: '800', marginBottom: '1.5rem', color: 'var(--text-main)', letterSpacing: '-0.025em' }}>
                     All the tools you need to work with PDFs
