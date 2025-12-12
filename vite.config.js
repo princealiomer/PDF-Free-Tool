@@ -5,4 +5,9 @@ import react from '@vitejs/plugin-react'
 // Force restart
 export default defineConfig({
   plugins: [react()],
+  build: {
+    minify: true, // Minifies JS
+    cssMinify: true, // Minifies CSS
+    sourcemap: false
+  }
 })
