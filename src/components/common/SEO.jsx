@@ -7,7 +7,7 @@ const SEO = ({
     description,
     keywords,
     canonicalUrl,
-    canonicalUrl,
+
     schema,
     children
 }) => {
