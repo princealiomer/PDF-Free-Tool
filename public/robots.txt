@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://pdftools.com/sitemap.xml
+Sitemap: https://online-pdf-tools.netlify.app/sitemap.xml
